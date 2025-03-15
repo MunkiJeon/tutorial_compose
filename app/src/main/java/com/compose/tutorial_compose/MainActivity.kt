@@ -1,6 +1,7 @@
 package com.compose.tutorial_compose
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -14,18 +15,29 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.BottomAppBarDefaults
+import androidx.compose.material3.BottomAppBarScrollBehavior
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -33,9 +45,11 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TriStateCheckbox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -62,6 +76,7 @@ class MainActivity : ComponentActivity() {
             Tutorial_composeTheme {
                 val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
                 Scaffold(
+                    bottomBar = { BasicBottomAppBar() },
                     topBar = { BasicTopAppBar() },
                     modifier = Modifier
                         .fillMaxSize()
@@ -221,11 +236,85 @@ fun Screen(modifier: Modifier = Modifier) {
     }
 }
 
+//BottomAppBar / DropdownMenu
+@Composable
+fun BasicBottomAppBar(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+
+    var isShow = remember { mutableStateOf(false) }
+    if (isShow.value) {
+        BasicDropdownMenu()
+    }
+
+    BottomAppBar(
+        actions = {
+            IconButton(onClick = {
+                Toast.makeText(context, "Home", Toast.LENGTH_SHORT).show()
+            }) {
+                Icon(
+                    imageVector = Icons.Default.Home,
+                    contentDescription = "Home Icon",
+                )
+            }
+            IconButton(onClick = {
+                Toast.makeText(context, "Profile", Toast.LENGTH_SHORT).show()
+            }) {
+                Icon(
+                    imageVector = Icons.Default.AccountCircle,
+                    contentDescription = "Profile Icon",
+                )
+            }
+        },
+        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        containerColor = MaterialTheme.colorScheme.surface,
+
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    isShow.value = !isShow.value
+                }
+            ){
+                Icon(
+                    imageVector = Icons.Default.AddCircle,
+                    contentDescription = "FloatingActionButton",
+                )
+            }
+        }
+        )
+}
+@Composable
+fun BasicDropdownMenu(modifier: Modifier = Modifier) {
+    val items = listOf("A", "B", "C", "D", "E", "F")
+    var expanded by remember { mutableStateOf(true) }
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentSize(Alignment.BottomEnd)//화면의 오른쪽 아래에 정렬
+    ) {
+        DropdownMenu(
+            expanded = expanded, // 처음에 닫혀 있을지
+            onDismissRequest = { expanded = false } //드롭다운 밖을 누르면 닫힘
+
+        ){
+            items.forEachIndexed { index, text ->
+                DropdownMenuItem(
+                    onClick = {
+                        expanded = false
+                    },
+                    text = {
+                        Text(text = text)
+                    }
+                )
+            }
+        }
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BasicTopAppBar(modifier: Modifier = Modifier) {
     val isDetail = remember { mutableStateOf(false) }
-
     TopAppBar(
         title = {
             Text(text = "BasicTopAppBar")
