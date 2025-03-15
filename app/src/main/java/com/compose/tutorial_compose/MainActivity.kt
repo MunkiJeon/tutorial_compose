@@ -5,11 +5,13 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -65,6 +67,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
+import com.compose.tutorial_compose.nevigation.BookNavigation
 import com.compose.tutorial_compose.ui.theme.Tutorial_composeTheme
 
 class MainActivity : ComponentActivity() {
@@ -79,18 +82,19 @@ class MainActivity : ComponentActivity() {
                     bottomBar = { BasicBottomAppBar() },
                     topBar = { BasicTopAppBar() },
                     modifier = Modifier
+                        .background(Color.Red)
                         .fillMaxSize()
                         .nestedScroll(scrollBehavior.nestedScrollConnection)
                 ) { innerPadding ->
                     Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
-                            .padding(innerPadding)
                     ) {
-                        Text(
-                            text = "Hello World!",
-                        )
+                        Text(text = "Hello World!",)
+                        BookNavigation()
                     }
-                    Screen()
+//                    Screen()
                 }
 //                Screen()
 //                Greeting("Android")
