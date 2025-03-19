@@ -82,10 +82,10 @@ class MainActivity : ComponentActivity() {
                     bottomBar = { BasicBottomAppBar() },
                     topBar = { BasicTopAppBar() },
                     modifier = Modifier
-                        .background(Color.Red)
                         .fillMaxSize()
                         .nestedScroll(scrollBehavior.nestedScrollConnection)
                 ) { innerPadding ->
+                    innerPadding
                     Column(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally,

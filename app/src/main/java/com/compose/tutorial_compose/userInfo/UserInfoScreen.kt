@@ -49,10 +49,12 @@ fun  UserInfoScreen(navController: NavController, modifier: Modifier = Modifier)
             placeholder = { Text("전화번호") }
         )
         Spacer(modifier = modifier.height(10.dp))
-        
-        Button(onClick = { navController.navigate(BookScreens.HomeScreen.name+"/$name,$phone") }) {
-            Text(text = "홈으로")
+        if (name.isNotEmpty()&&phone.isNotEmpty()){
+            Button(onClick = { navController.navigate(BookScreens.HomeScreen.name+"/$name,$phone") }) {
+                Text(text = "홈으로")
+            }
         }
+
     }
 }
 
