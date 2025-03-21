@@ -80,7 +80,7 @@ class MainActivity : ComponentActivity() {
                 val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
                 Scaffold(
                     bottomBar = { BasicBottomAppBar() },
-                    topBar = { BasicTopAppBar() },
+//                    topBar = { BasicTopAppBar() },
                     modifier = Modifier
                         .fillMaxSize()
                         .nestedScroll(scrollBehavior.nestedScrollConnection)
