@@ -1,92 +1,46 @@
-package com.compose.tutorial_compose
+package com.compose.tutorial_compose.screens
 
-import android.os.Bundle
-import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.BottomAppBarDefaults
-import androidx.compose.material3.BottomAppBarScrollBehavior
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TriStateCheckbox
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.navigation.NavController
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
-import com.compose.tutorial_compose.nevigation.BookNavigation
-import com.compose.tutorial_compose.ui.theme.Tutorial_composeTheme
+import com.compose.tutorial_compose.R
 
-class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalMaterial3Api::class)
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            Tutorial_composeTheme {
-                Surface { BookNavigation(modifier = Modifier) }
-            }
-        }
-    }
-}
-
-@Preview(showBackground = true)
 @Composable
-fun Screen(modifier: Modifier = Modifier) {
+fun Practice00(navController: NavController, modifier: Modifier){
     //클릭커 영역
     val (clicks, setClicks) = remember { mutableStateOf(0) }
     //약관 전체 동의 : TriStateCheckbox
@@ -101,9 +55,10 @@ fun Screen(modifier: Modifier = Modifier) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 50.dp)
+            .fillMaxSize()
+            .padding(all = 30.dp)
     ) {
+        Spacer(modifier = modifier.height(20.dp))
         Text(
             "Total Clicks: $clicks",
             fontSize = 32.sp
@@ -218,136 +173,5 @@ fun Screen(modifier: Modifier = Modifier) {
         ) {
             Text("next page", fontSize = 24.sp)
         }
-    }
-}
-
-//BottomAppBar / DropdownMenu
-@Composable
-fun BasicBottomAppBar(modifier: Modifier = Modifier) {
-    val context = LocalContext.current
-
-    var isShow = remember { mutableStateOf(false) }
-    if (isShow.value) {
-        BasicDropdownMenu()
-    }
-
-    BottomAppBar(
-        actions = {
-            IconButton(onClick = {
-                Toast.makeText(context, "Home", Toast.LENGTH_SHORT).show()
-            }) {
-                Icon(
-                    imageVector = Icons.Default.Home,
-                    contentDescription = "Home Icon",
-                )
-            }
-            IconButton(onClick = {
-                Toast.makeText(context, "Profile", Toast.LENGTH_SHORT).show()
-            }) {
-                Icon(
-                    imageVector = Icons.Default.AccountCircle,
-                    contentDescription = "Profile Icon",
-                )
-            }
-        },
-        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-        containerColor = MaterialTheme.colorScheme.surface,
-
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    isShow.value = !isShow.value
-                }
-            ){
-                Icon(
-                    imageVector = Icons.Default.AddCircle,
-                    contentDescription = "FloatingActionButton",
-                )
-            }
-        }
-        )
-}
-@Composable
-fun BasicDropdownMenu(modifier: Modifier = Modifier) {
-    val items = listOf("A", "B", "C", "D", "E", "F")
-    var expanded by remember { mutableStateOf(true) }
-
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentSize(Alignment.BottomEnd)//화면의 오른쪽 아래에 정렬
-    ) {
-        DropdownMenu(
-            expanded = expanded, // 처음에 닫혀 있을지
-            onDismissRequest = { expanded = false } //드롭다운 밖을 누르면 닫힘
-
-        ){
-            items.forEachIndexed { index, text ->
-                DropdownMenuItem(
-                    onClick = {
-                        expanded = false
-                    },
-                    text = {
-                        Text(text = text)
-                    }
-                )
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun BasicTopAppBar(modifier: Modifier = Modifier) {
-    val isDetail = remember { mutableStateOf(false) }
-    TopAppBar(
-        title = {
-            Text(text = "BasicTopAppBar")
-        },
-//        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Cyan),
-        actions = {
-            IconButton(onClick = {
-                isDetail.value = !isDetail.value
-            }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "Search Icon",
-                )
-            }
-        },
-        navigationIcon = {
-            if (isDetail.value) {
-                IconButton(onClick = {
-                    isDetail.value = !isDetail.value
-                }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "Back Icon",
-                    )
-                }
-            } else {
-                Box {}
-            }
-
-        },
-        scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-    )
-}
-
-@Composable //초기 code
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Composable
-fun GreetingPreview() {
-    Tutorial_composeTheme {
-        Screen()
-//        Greeting("Android") //초기 code
     }
 }
